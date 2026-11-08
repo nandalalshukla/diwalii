@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+  <title>Happy Diwali · Virtual Pataka Mela</title>
+  <meta name="description" content="Burst Diwali crackers virtually — bullet bomb, sutli bomb, alu bomb, anar, chakri, rockets — in 3D with real-feel sound. ₹0 spent, zero pollution." />
+  <meta name="theme-color" content="#12051f" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M8 38c4 12 44 12 48 0z' fill='%23b4532a'/><path d='M32 6c8 10 8 20 0 26-8-6-8-16 0-26z' fill='%23ffb300'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Poppins:wght@400;600;800&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" crossorigin />
+  <link rel="modulepreload" href="js/main.js" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="scene" aria-label="3D Diwali courtyard"></canvas>
+
+  <div id="jhalar" aria-hidden="true"></div>
+
+  <header class="title">
+    <h1>Happy Diwali</h1>
+    <p><span class="hi">शुभ दीपावली</span> · Virtual Pataka Mela</p>
+  </header>
+
+  <div class="topbar">
+    <button id="sound-btn" class="icon-btn" aria-pressed="true" title="Sound on/off">
+      <svg viewBox="0 0 24 24" class="on"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 24 24" class="off"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button id="ambient-btn" class="icon-btn" aria-pressed="true" title="Neighbours' fireworks on/off">
+      <svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></g></svg>
+    </button>
+    <button id="view-btn" class="icon-btn" title="Reset camera">
+      <svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 4v6h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <section id="meter" aria-label="Your green Diwali">
+    <div class="chip money" title="Money saved">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.5 9h5M9.5 11.2h5M10.5 9c2.4 0 2.4 3.4 0 3.4h-1l3.5 3.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <b id="m-saved" aria-label="Money saved">₹0</b>
+    </div>
+    <div class="chip poll" title="Pollution avoided">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c-2.2 0-4-1.6-4-3.7 0-1.9 1.5-3.5 3.4-3.7C6 8.9 8.4 7 11.2 7c2.5 0 4.6 1.5 5.4 3.7 2.6 0 4.4 2 4.4 4.3S19.2 19 16.8 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M4 4l16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <b id="m-smoke" aria-label="Pollution avoided">0 g</b>
+    </div>
+  </section>
+
+  <aside id="shop" aria-label="Pataka dukaan">
+    <div class="shop-head">
+      <h2>Pataka Dukaan</h2>
+      <span class="hi">पटाखा दुकान</span>
+      <p>Market price shown — here everything is <b>FREE</b></p>
+    </div>
+    <div id="shop-list"></div>
+  </aside>
+
+  <div id="where" role="group" aria-label="Where to burst">
+    <button data-spot="ground" aria-pressed="true" title="Burst in the courtyard">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 20v-6h4v6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <span>Aangan<small class="hi">आँगन</small></span>
+    </button>
+    <button data-spot="roof" aria-pressed="false" title="Go up to the rooftop and see the whole town">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V9h5v12M10 21V4h5v17M17 21v-9h4v9M2 21h20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span>Chhat<small class="hi">छत</small></span>
+    </button>
+    <button id="tour-btn" title="Fly around the house — see it from every side">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="9" ry="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M18 9l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>360°<small>ghar dekho</small></span>
+    </button>
+  </div>
+
+  <div id="countdown" aria-live="assertive"></div>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="pops" aria-hidden="true"></div>
+
+  <div id="intro">
+    <div class="intro-card">
+      <div class="diya-anim" aria-hidden="true"><span class="flame"></span><span class="bowl"></span></div>
+      <h1>Happy Diwali</h1>
+      <p class="hi big">शुभ दीपावली</p>
+      <p class="lead">Burst every pataka you love — bullet bomb se sutli bomb tak — in glorious 3D with real-feel dhamaka. <b>₹0 kharcha. Zero dhuaan.</b></p>
+      <ul class="points">
+        <li><b>₹0</b><span>spent</span></li>
+        <li><b>0 g</b><span>smoke</span></li>
+        <li><b>100%</b><span>masti</span></li>
+      </ul>
+      <button id="enter-btn" disabled>Sajaa rahe hain… (decorating)</button>
+      <p class="note">Turn your sound up for the full dhamaka</p>
+    </div>
+  </div>
+
+  <footer class="foot">*rough estimate of the smoke &amp; particulate mass a real cracker of that kind releases — for awareness, not a lab measurement. Celebrate green — <span class="hi">हरित दीपावली</span></footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

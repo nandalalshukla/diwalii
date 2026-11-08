@@ -1,0 +1,10 @@
+{
+  "name": "virtual-pataka-mela",
+  "version": "1.0.0",
+  "description": "Happy Diwali — burst Indian firecrackers virtually in 3D. ₹0 spent, zero pollution.",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes http-server . -p 5173 -c-1 -o"
+  },
+  "license": "MIT"
+}
